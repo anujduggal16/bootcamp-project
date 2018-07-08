@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const mysql = require('mysql2')
+const bodyParser = require('body-parser');
 
   
 const connection = mysql.createConnection({
@@ -11,9 +12,8 @@ const connection = mysql.createConnection({
 })
 
 app.use( express.static('public') ) ;
-
-app.use(express.json());
-app.use(express.urlencoded({extended: true}) );
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}) );
 
 app.all("/*", function(req, res, next){
   res.header('Access-Control-Allow-Origin', '*');
@@ -22,7 +22,7 @@ app.all("/*", function(req, res, next){
   next();
 });
 
-//register new user
+//registers new user
 app.post('/new', function (req, res) {
 
   //generate a secret random key for every new user which helps in session handling 
@@ -318,9 +318,10 @@ app.post('/getmessages',function(req,res){
 });
 });
 
-let port = process.env.PORT | 3000
-let ip = process.env.IP | '127.0.0.1'
+let port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000
+let ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'
 
 app.listen(port,ip, function () {
+  console.log("Express server listening on port %d in %s mode", port , ip);
   console.log('Example app listening on port 3000!')
 })
