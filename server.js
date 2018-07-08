@@ -22,7 +22,7 @@ app.all("/*", function(req, res, next){
   next();
 });
 
-//register new user
+//registers new user
 app.post('/new', function (req, res) {
 
   //generate a secret random key for every new user which helps in session handling 
