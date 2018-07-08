@@ -4,10 +4,10 @@ const mysql = require('mysql2')
 
   
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'pass',
-  database: 'project'
+  host: 'sql12.freemysqlhosting.net',
+  user: 'sql12246465',
+  password: '1Eil1Ee7Xc',
+  database: 'sql12246465'
 })
 
 app.use( express.static('public') ) ;
@@ -44,13 +44,18 @@ function(err , results , fields){
 
 //login
 app.post('/login', function (req, res) {
-connection.query(`SELECT * FROM USERS WHERE email = ?`,[req.body.email],
+  
+connection.query(`SELECT * FROM users WHERE email = ?`,[req.body.email],
 function(err,results,fields){
+  if(err)
+  {
+    console.log(err);
+  }
   if (results.length == 0){    
     res.send(JSON.stringify({ status: "falseemail" }))
    }
    else{
-    connection.query(`SELECT password FROM USERS WHERE email = ? ` , [req.body.email],
+    connection.query(`SELECT password FROM users WHERE email = ? ` , [req.body.email],
     function(err , results , fields ) {
       if (results[0].password == req.body.password){
        res.send(JSON.stringify({ status: "true" }))
@@ -66,7 +71,7 @@ function(err,results,fields){
 
 //get data of current user
 app.post('/getuserdata',function(req,res){
-  connection.query(`SELECT *  FROM USERS WHERE email = ?` , [req.body.email],
+  connection.query(`SELECT *  FROM users WHERE email = ?` , [req.body.email],
   function(err , results , fields ) {
     if (err) {
       console.log(err) ;
@@ -79,7 +84,7 @@ app.post('/getuserdata',function(req,res){
 
 //get name of current user
 app.post('/getname',function(req,res){
-  connection.query(`SELECT username  FROM USERS WHERE email = ?` , [req.body.email],
+  connection.query(`SELECT username  FROM users WHERE email = ?` , [req.body.email],
   function(err , results , fields ) {
     if (err) {
       console.log(err) ;
@@ -92,7 +97,7 @@ app.post('/getname',function(req,res){
 
 //fetch all books listed
 app.get('/getlistings',function(req,res){
-  connection.query(`SELECT * FROM   LISTINGS`,   
+  connection.query(`SELECT * FROM  listings`,   
   function(err , results , fields ) {
     if (err) {
       console.log(err) ;
@@ -110,7 +115,7 @@ app.get('/getlistings',function(req,res){
 
 //fetch details of a book when id is given
 app.post('/getbookdetails',function(req,res){
-  connection.query(`SELECT * FROM LISTINGS WHERE id = ?` , [req.body.id],
+  connection.query(`SELECT * FROM listings WHERE id = ?` , [req.body.id],
   function(err , results , fields ) {
     if (err) {
       console.log(err) ;
@@ -124,7 +129,7 @@ app.post('/getbookdetails',function(req,res){
 //fetch details of a book when condition is given
 app.post('/filterbooks',function(req,res){
   console.log("server")
-  connection.query(`SELECT * FROM LISTINGS WHERE book_condition = ?` , [req.body.condition],
+  connection.query(`SELECT * FROM listings WHERE book_condition = ?` , [req.body.condition],
   function(err , results , fields ) {
     if (err) {
       console.log(err) ;
@@ -155,7 +160,7 @@ app.post('/search',function(req,res){
 app.post('/addtowishlist',function(req,res){
 
   //check if book already wishlisted 
-  connection.query(`SELECT * FROM WISHLIST  WHERE email=? AND bookid=?`,[req.body.email,req.body.bookid],
+  connection.query(`SELECT * FROM wishlist  WHERE email=? AND bookid=?`,[req.body.email,req.body.bookid],
 function(err,results,fields){
   if (err) {
     console.log(err) ;
@@ -164,7 +169,7 @@ function(err,results,fields){
     res.send(JSON.stringify({ status: "negative" }))
    }
    else{
-    connection.query(`INSERT INTO WISHLIST (email,bookid) VALUES(?,?)` , [req.body.email,req.body.bookid],
+    connection.query(`INSERT INTO wishlist (email,bookid) VALUES(?,?)` , [req.body.email,req.body.bookid],
     function(err , results , fields ) {
       if (err) {
         console.log(err) ;
@@ -183,9 +188,9 @@ function(err,results,fields){
 
 //get wishlist
 app.post('/getwishlist',function(req,res){
-  connection.query(`SELECT LISTINGS.*
-  FROM WISHLIST
-  INNER JOIN LISTINGS ON LISTINGS.id = WISHLIST.bookid  where WISHLIST.email= ?` , [req.body.email],
+  connection.query(`SELECT listings.*
+  FROM wishlist 
+  INNER JOIN listings ON listings.id = wishlist.bookid  where wishlist.email= ?` , [req.body.email],
   function(err , results , fields ) {
     if (err) {
       console.log(err) ;
@@ -204,7 +209,7 @@ app.post('/getwishlist',function(req,res){
 //delete book from wishlist based on bookid
 app.post('/deletewishlistid',function(req,res){
 
-    connection.query(`DELETE FROM WISHLIST WHERE bookid=?`,[req.body.bookid],
+    connection.query(`DELETE FROM wishlist  WHERE bookid=?`,[req.body.bookid],
     function(err , results , fields ) {
       if (err) {
         console.log(err) ;
@@ -215,7 +220,7 @@ app.post('/deletewishlistid',function(req,res){
 //delete book from wishlist
 app.post('/deletewishlist',function(req,res){
 
-  connection.query(`DELETE FROM WISHLIST WHERE email=? AND bookid=?`,[req.body.email,req.body.bookid],
+  connection.query(`DELETE FROM wishlist WHERE email=? AND bookid=?`,[req.body.email,req.body.bookid],
   function(err , results , fields ) {
     if (err) {
       console.log(err) ;
@@ -231,7 +236,7 @@ app.post('/deletewishlist',function(req,res){
 
 //add new book
 app.post('/newbook',function(req,res){
-  connection.query(`INSERT INTO LISTINGS (bookname, author, image, price, book_condition,email)
+  connection.query(`INSERT INTO listings (bookname, author, image, price, book_condition,email)
   VALUES (?, ?, ?, ?, ?, ? )`,
  [req.body.bookname,req.body.author,req.body.image, req.body.price, req.body.condition,req.body.email],
 function(err , results , fields){
@@ -249,7 +254,7 @@ function(err , results , fields){
 
 //get listings of user
 app.post('/getmylistings',function(req,res){
-  connection.query(`SELECT * FROM LISTINGS WHERE email=?`, [req.body.email],
+  connection.query(`SELECT * FROM listings WHERE email=?`, [req.body.email],
   function(err , results , fields ) {
     if (err) {
       console.log(err) ;
@@ -268,7 +273,7 @@ app.post('/getmylistings',function(req,res){
 //delte book from wishlist
 app.post('/deletelisting',function(req,res){
 
-  connection.query(`DELETE FROM LISTINGS WHERE email=? AND id=?`,[req.body.email,req.body.bookid],
+  connection.query(`DELETE FROM listings WHERE email=? AND id=?`,[req.body.email,req.body.bookid],
   function(err , results , fields ) {
     if (err) {
       console.log(err) ;
@@ -284,7 +289,7 @@ app.post('/deletelisting',function(req,res){
 
 //sendmessage
 app.post('/sendmessage',function(req,res){
-  connection.query(`INSERT INTO MESSAGES (sender, senderemail, receiver, receiveremail, message, date)
+  connection.query(`INSERT INTO messages (sender, senderemail, receiver, receiveremail, message, date)
   VALUES (?, ?, ?, ?, ?, ? )`,
  [req.body.sender,req.body.senderemail,req.body.receiver, req.body.recvemail, req.body.message, req.body.date],
 function(err , results , fields){
@@ -302,7 +307,7 @@ function(err , results , fields){
 
 //get messages of user
 app.post('/getmessages',function(req,res){
-  connection.query(`SELECT *  FROM MESSAGES WHERE senderemail = ? OR receiveremail = ?` , [req.body.email,req.body.email],
+  connection.query(`SELECT *  FROM messages WHERE senderemail = ? OR receiveremail = ?` , [req.body.email,req.body.email],
   function(err , results , fields ) {
     if (err) {
       console.log(err) ;
