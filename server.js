@@ -318,8 +318,8 @@ app.post('/getmessages',function(req,res){
 });
 });
 
-let port = process.env.port | 3000
-let ip = process.env.ip | '127.0.0.1'
+let port = process.env.PORT | 3000
+let ip = process.env.IP | '127.0.0.1'
 
 app.listen(port,ip, function () {
   console.log('Example app listening on port 3000!')
