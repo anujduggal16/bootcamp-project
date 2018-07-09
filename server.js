@@ -369,6 +369,10 @@ app.post('/getmessages',function(req,res){
 });
 });
 
+app.get("*" , function(req,res) {
+  res.sendfile('./public/index.html') ;
+}) ;
+
 let port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000
 let ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'
 
