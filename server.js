@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
   user: 'sql12246465',
   password: '1Eil1Ee7Xc',
   database: 'sql12246465'
-})
+} ) ;
 
 app.use( express.static('public') ) ;
 app.use(bodyParser.json());
