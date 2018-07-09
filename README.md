@@ -18,5 +18,6 @@ node server.js
 ```
 ## Running the tests
 
-username - anujduggal@gmail.com
-password - 12345678                                                                                                                      This pair can be used to understand the basic working of website.
+username - anujduggal@gmail.com <br />
+password - 12345678 <br />  
+This pair can be used to understand the basic working of website.
