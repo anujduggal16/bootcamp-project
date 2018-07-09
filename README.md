@@ -18,6 +18,10 @@ node server.js
 ```
 ## Running the tests
 
+Run the website on 
+```
+http://localhost:3000
+```
 username - anujduggal@gmail.com <br />
 password - 12345678 <br />  
 This pair can be used to understand the basic working of website.
