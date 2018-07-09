@@ -8,7 +8,15 @@ const connection = mysql.createConnection({
   user: 'sql12246465',
   password: '1Eil1Ee7Xc',
   database: 'sql12246465'
-})
+ })
+
+// const connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'pass',
+//   database: 'project'
+// })
+
 
 app.use( express.static('public') ) ;
 
@@ -128,7 +136,6 @@ app.post('/getbookdetails',function(req,res){
 
 //fetch details of a book when condition is given
 app.post('/filterbooks',function(req,res){
-  console.log("server")
   connection.query(`SELECT * FROM listings WHERE book_condition = ?` , [req.body.condition],
   function(err , results , fields ) {
     if (err) {
@@ -136,11 +143,55 @@ app.post('/filterbooks',function(req,res){
     }
     
     else{
-      console.log(results);
+     
      res.json(results) ;
     }
 });
 });
+
+//fetch details of a book when price is given
+app.post('/filter',function(req,res){
+  if(req.body.price == "500"){
+    let a =500;
+    connection.query(`SELECT * FROM listings WHERE price < ?` , [a],
+    function(err , results , fields ) {
+      if (err) {
+        console.log(err) ;
+      }
+      
+      else{
+       res.json(results) ;
+      }
+  });
+  }
+  else if(req.body.price == "750"){
+    let a = 500 ;
+    let b = 1000 ;
+    connection.query(`SELECT * FROM listings WHERE price >= ? AND price <= ?` , [a,b],
+    function(err , results , fields ) {
+      if (err) {
+        console.log(err) ;
+      }
+      
+      else{
+       res.json(results) ;
+      }
+  });
+}
+  else if(req.body.price == "1000"){
+    let a = 1000;
+    connection.query(`SELECT * FROM listings WHERE price > ? ` , [a],
+    function(err , results , fields ) {
+      if (err) {
+        console.log(err) ;
+      }
+      else{
+       res.json(results) ;
+      }
+  });
+}
+});
+
 
 //search books
 app.post('/search',function(req,res){
