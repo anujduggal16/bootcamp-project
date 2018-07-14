@@ -321,7 +321,7 @@ app.post('/getmylistings',function(req,res){
 });
 });
 
-//delte book from wishlist
+//delte book from listings
 app.post('/deletelisting',function(req,res){
 
   connection.query(`DELETE FROM listings WHERE email=? AND id=?`,[req.body.email,req.body.bookid],
