@@ -340,9 +340,9 @@ app.post('/deletelisting',function(req,res){
 
 //sendmessage
 app.post('/sendmessage',function(req,res){
-  connection.query(`INSERT INTO messages (sender, senderemail, receiver, receiveremail, message, date)
-  VALUES (?, ?, ?, ?, ?, ? )`,
- [req.body.sender,req.body.senderemail,req.body.receiver, req.body.recvemail, req.body.message, req.body.date],
+  connection.query(`INSERT INTO messages (sender, senderemail, receiver, receiveremail, message, date, bookname)
+  VALUES (?, ?, ?, ?, ?, ?, ? )`,
+ [req.body.sender,req.body.senderemail,req.body.receiver, req.body.recvemail, req.body.message, req.body.date, req.body.bookname],
 function(err , results , fields){
   if(err){
     console.log(err);
